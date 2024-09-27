@@ -1,0 +1,59 @@
+ <form class="main-order-form m1-form" id="order_form" method="POST">
+                  <input type="text" name="name" placeholder="Введіть ваше ім&#39;я" autocomplete="off" required="">
+                  <input type="tel" name="phone" placeholder="Ваш номер телефона" required="required" inputmode="tel">
+                  <select name="product" required="" class="formSelect">
+                    <option value="" disabled selected>Виберіть розмір</option>
+                    <option value="Дитяче (1,10*1,40)">Дитяче (1,10*1,40)</option>
+                    <option value="Полуторне (1,45*2,10)">Полуторне (1,45*2,10)</option>
+                    <option value="Двохспальне (1,75*2,10)">Двохспальне (1,75*2,10)</option>
+                    <option value="Евро-розмір (1,95*2,15)">Евро-розмір (1,95*2,15)</option>
+                  </select>
+                  <button class="button-m" id="sub0">Замовити </button>
+              </form>
+
+
+
+              
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    document.getElementById('order_form').addEventListener('submit', function(e) {
+                        e.preventDefault(); // Запобігаємо стандартній відправці форми
+                     
+                        // Отримуємо значення полів форми
+                        var name = document.querySelector('input[name="name"]').value;
+                        var phone = document.querySelector('input[name="phone"]').value;
+                        var product = document.querySelector('select[name="product"]').value;
+                       
+                        // Формуємо повідомлення
+                        var message = `Нове замовлення (рюкзак):\nІм'я та прізвище: ${name}\nТелефон: ${phone}\nКолір: ${product}`;
+                     
+                        // Ваш токен та ID чату
+                        var token = '7050336205:AAEofF2a5HfgtMgxm4hdX7vY7JV_jJWh9qU';
+                        var chatId = 1404908930; // Замініть YOUR_CHAT_ID на ваш реальний ID чату
+                     
+                        // Відправляємо повідомлення через Telegram API
+                        fetch('https://api.telegram.org/bot' + token + '/sendMessage', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                chat_id: chatId,
+                                text: message,
+                                parse_mode: "Markdown"
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log('Success:', data);
+                            // Після успішної відправки, одразу перенаправляємо на сторінку "Дякую"
+                            window.location.href = "./ковдра_files/thank_you_page.html"; 
+                        })
+                        .catch((error) => {
+                            console.error('Error:', error);
+                            alert('Помилка при відправленні замовлення.');
+                        });
+                    });
+                });
+              </script>
+              
